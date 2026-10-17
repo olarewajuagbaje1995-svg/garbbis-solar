@@ -5,11 +5,16 @@ import { STORAGE_BUCKET } from '../../lib/config'
 import { explainError } from '../../lib/errors'
 import { SLUG_PATTERN, slugify } from '../../lib/format'
 import { btnDanger, btnPrimary, btnSecondary, cardCls, inputCls, labelCls } from '../../lib/styles'
-import type { Category } from '../../lib/types'
+import type { Category as BaseCategory } from '../../lib/types'
 import Loading from '../../components/Loading'
 import Notice from '../../components/Notice'
 import ImageUploader from './ImageUploader'
 import { Sun } from 'lucide-react'
+
+// Tell TypeScript about our new database column!
+type Category = BaseCategory & {
+  image_path?: string | null;
+}
 
 export default function CategoriesAdmin() {
   const [items, setItems] = useState<Category[]>([])
