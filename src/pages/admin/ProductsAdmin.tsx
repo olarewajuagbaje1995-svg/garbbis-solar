@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState, useMemo } from 'react'
 import type { FormEvent } from 'react'
 import { Plus, Trash2, Search, Filter } from 'lucide-react'
-import { supabase } from '../../lib/supabase'
+import { supabase, publicImageUrl } from '../../lib/supabase'
 import { STORAGE_BUCKET } from '../../lib/config'
 import { explainError } from '../../lib/errors'
 import { AVAILABILITY_LABELS, SLUG_PATTERN, formatNaira, slugify } from '../../lib/format'
@@ -12,6 +12,14 @@ import Loading from '../../components/Loading'
 import Notice from '../../components/Notice'
 import ImageUploader from './ImageUploader'
 import RichTextEditor from '../../components/RichTextEditor'
+
+// Extended interface to safely access joined category details without breaking strict TypeScript builds
+interface AdminProduct extends Omit<Product, 'categories'> {
+  categories?: {
+    name?: string
+    slug?: string
+  } | null
+}
 
 interface FormState {
   name: string
@@ -40,7 +48,7 @@ const blank = (categoryId: string): FormState => ({
 })
 
 export default function ProductsAdmin() {
-  const [products, setProducts] = useState<Product[]>([])
+  const [products, setProducts] = useState<AdminProduct[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -50,7 +58,7 @@ export default function ProductsAdmin() {
   const [initialPaths, setInitialPaths] = useState<string[]>([])
   const [busy, setBusy] = useState(false)
 
-  // New Search and Filter States
+  // Search and Filter States
   const [searchTerm, setSearchTerm] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('all')
 
@@ -62,7 +70,7 @@ export default function ProductsAdmin() {
     if (p.error) setError(explainError(p.error))
     else if (c.error) setError(explainError(c.error))
     else {
-      setProducts((p.data ?? []) as unknown as Product[])
+      setProducts((p.data ?? []) as unknown as AdminProduct[])
       setCategories((c.data ?? []) as Category[])
     }
     setLoading(false)
@@ -84,19 +92,19 @@ export default function ProductsAdmin() {
     setSuccess(null)
   }
 
-  function openEdit(p: Product) {
+  function openEdit(p: AdminProduct) {
     setEditingId(p.id)
-    setInitialPaths(p.image_paths)
+    setInitialPaths(p.image_paths ?? [])
     setForm({
       name: p.name,
       slug: p.slug,
       slugTouched: true,
-      description: p.description,
+      description: p.description ?? '',
       category_id: p.category_id,
       price: p.price_ngn === null ? '' : String(p.price_ngn),
       availability: p.availability,
-      specs: p.specifications,
-      image_paths: p.image_paths,
+      specs: p.specifications ?? [],
+      image_paths: p.image_paths ?? [],
       is_published: p.is_published,
     })
     setError(null)
@@ -158,7 +166,7 @@ export default function ProductsAdmin() {
     await load()
   }
 
-  async function togglePublished(p: Product) {
+  async function togglePublished(p: AdminProduct) {
     setError(null)
     const { error: err } = await supabase.from('products').update({ is_published: !p.is_published }).eq('id', p.id)
     if (err) return setError(explainError(err))
@@ -166,27 +174,26 @@ export default function ProductsAdmin() {
     await load()
   }
 
-  async function remove(p: Product) {
+  async function remove(p: AdminProduct) {
     if (!window.confirm(`Permanently delete "${p.name}" and its images? This cannot be undone.`)) return
     setError(null)
     const { error: err } = await supabase.from('products').delete().eq('id', p.id)
     if (err) return setError(explainError(err))
-    await deleteFiles(p.image_paths)
+    await deleteFiles(p.image_paths ?? [])
     setSuccess(`"${p.name}" was deleted.`)
     await load()
   }
 
-  // Calculate filtered products
   const filteredProducts = useMemo(() => {
     return products.filter((p) => {
+      const catName = p.categories?.name ?? ''
       const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                            (p.categories?.name || '').toLowerCase().includes(searchTerm.toLowerCase())
+                            catName.toLowerCase().includes(searchTerm.toLowerCase())
       const matchesCat = categoryFilter === 'all' || p.category_id === categoryFilter
       return matchesSearch && matchesCat
     })
   }, [products, searchTerm, categoryFilter])
 
-  // Calculate category stats
   const categoryStats = useMemo(() => {
     return categories.map(cat => ({
       ...cat,
@@ -204,7 +211,7 @@ export default function ProductsAdmin() {
       {!form && (
         <>
           {/* HORIZONTAL INVENTORY DASHBOARD */}
-          <div className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 hide-scrollbar">
+          <div className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
             <div className="flex-shrink-0 w-36 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
               <p className="text-[10px] font-black uppercase tracking-wider text-slate-500">Total Products</p>
               <p className="mt-1 text-3xl font-black text-slate-900">{products.length}</p>
@@ -255,33 +262,36 @@ export default function ProductsAdmin() {
                 No products found matching your criteria.
               </p>
             )}
-            {filteredProducts.map((p) => (
-              <div key={p.id} className="flex flex-wrap items-center justify-between gap-3 p-4 transition hover:bg-slate-50">
-                <div className="min-w-0 flex items-center gap-4">
-                  <div className="w-12 h-12 bg-slate-100 border border-slate-200 rounded-lg overflow-hidden shrink-0 hidden sm:block">
-                    {p.image_paths?.[0] ? (
-                      <img src={`${supabase.storage.from(STORAGE_BUCKET).getPublicUrl(p.image_paths[0]).data.publicUrl}`} alt="" className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-slate-400 text-xs">No img</div>
-                    )}
+            {filteredProducts.map((p) => {
+              const firstImg = p.image_paths?.[0] ? publicImageUrl(p.image_paths[0]) : null
+              return (
+                <div key={p.id} className="flex flex-wrap items-center justify-between gap-3 p-4 transition hover:bg-slate-50">
+                  <div className="min-w-0 flex items-center gap-4">
+                    <div className="w-12 h-12 bg-slate-100 border border-slate-200 rounded-lg overflow-hidden shrink-0 hidden sm:block">
+                      {firstImg ? (
+                        <img src={firstImg} alt="" className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-slate-400 text-xs">No img</div>
+                      )}
+                    </div>
+                    <div>
+                      <p className="font-bold text-slate-900 truncate">{p.name}</p>
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        {p.categories?.name ?? 'Uncategorized'} &middot; {formatNaira(p.price_ngn)} &middot; <span className={p.is_published ? 'text-emerald-600 font-semibold' : 'text-amber-600 font-semibold'}>{p.is_published ? 'Published' : 'Unpublished'}</span>
+                      </p>
+                      <div className="mt-1.5"><AvailabilityBadge value={p.availability} /></div>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-bold text-slate-900 truncate">{p.name}</p>
-                    <p className="text-xs text-slate-500 mt-0.5">
-                      {p.categories?.name} &middot; {formatNaira(p.price_ngn)} &middot; <span className={p.is_published ? 'text-emerald-600 font-semibold' : 'text-amber-600 font-semibold'}>{p.is_published ? 'Published' : 'Unpublished'}</span>
-                    </p>
-                    <div className="mt-1.5"><AvailabilityBadge value={p.availability} /></div>
+                  <div className="flex flex-wrap gap-2">
+                    <button type="button" className={btnSecondary} onClick={() => void togglePublished(p)}>
+                      {p.is_published ? 'Unpublish' : 'Publish'}
+                    </button>
+                    <button type="button" className={btnSecondary} onClick={() => openEdit(p)}>Edit</button>
+                    <button type="button" className={btnDanger} onClick={() => void remove(p)}>Delete</button>
                   </div>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  <button type="button" className={btnSecondary} onClick={() => void togglePublished(p)}>
-                    {p.is_published ? 'Unpublish' : 'Publish'}
-                  </button>
-                  <button type="button" className={btnSecondary} onClick={() => openEdit(p)}>Edit</button>
-                  <button type="button" className={btnDanger} onClick={() => void remove(p)}>Delete</button>
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </>
       )}
