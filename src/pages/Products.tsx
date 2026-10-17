@@ -29,9 +29,18 @@ import Notice from '../components/Notice'
 /* -------------------------------------------------------
    CATEGORY IMAGE HELPERS
 
-   Images for Outdoor Lights are generated locally.
-   They do not depend on an external image host.
+   Use real product/lifestyle photography for Outdoor Lights and
+   Solar Accessories instead of illustrated placeholder graphics.
 ------------------------------------------------------- */
+
+const outdoorLightImage =
+  'https://vakkerlight.com/cdn/shop/files/Cylindrical_Outdoor_Wall_Light__19.jpg?v=1712664510&width=1200'
+const outdoorLightImageAlternate =
+  'https://www.kanlux.com/storage/products/aranz/big/46205_3.jpg'
+const solarAccessoriesImage =
+  'https://www.sustainable.co.za/cdn/shop/products/victron_kit_1.jpg?v=1634321992'
+const solarAccessoriesImageAlternate =
+  'https://callidus.shop/cdn/shop/products/KIT362305WNEW.jpg?v=1764850779&width=1000'
 
 function normalizeSlug(value: string) {
   return value
@@ -47,150 +56,39 @@ function normalizeSlug(value: string) {
 function getCategoryKey(name = '', slug = '') {
   const normalizedSlug = normalizeSlug(slug)
   const normalizedName = normalizeSlug(name)
-
   const combined = `${normalizedSlug} ${normalizedName}`
 
   if (
     combined.includes('outdoor') &&
     (combined.includes('light') || combined.includes('lighting'))
-  ) {
-    return 'outdoor-lights'
-  }
+  ) return 'outdoor-lights'
 
   if (
     combined.includes('indoor') &&
     (combined.includes('light') || combined.includes('lighting'))
-  ) {
-    return 'indoor-lights'
-  }
+  ) return 'indoor-lights'
 
   if (combined.includes('chandelier')) return 'chandeliers'
 
-  if (
-    combined.includes('switch') ||
-    combined.includes('socket')
-  ) {
+  if (combined.includes('switch') || combined.includes('socket')) {
     return 'switches-sockets'
+  }
+
+  if (combined.includes('solar') && combined.includes('accessor')) {
+    return 'solar-accessories'
   }
 
   if (
     combined.includes('solar') &&
     (combined.includes('panel') || combined.includes('energy'))
-  ) {
-    return 'solar-panels'
-  }
+  ) return 'solar-panels'
 
   if (combined.includes('inverter')) return 'inverters'
-
-  if (
-    combined.includes('batter') ||
-    combined.includes('battery')
-  ) {
-    return 'batteries'
-  }
-
-  if (
-    combined.includes('cctv') ||
-    combined.includes('security-camera')
-  ) {
-    return 'cctv'
-  }
+  if (combined.includes('batter') || combined.includes('battery')) return 'batteries'
+  if (combined.includes('cctv') || combined.includes('security-camera')) return 'cctv'
 
   return normalizedSlug || normalizedName
 }
-
-/*
- * A standalone outdoor wall-light illustration.
- * This SVG is encoded into a data URL, so it works without
- * downloading an image from another website.
- */
-function createOutdoorLightImage() {
-  const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg"
-      width="800" height="600" viewBox="0 0 800 600">
-      <defs>
-        <linearGradient id="wall" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#263746"/>
-          <stop offset="100%" stop-color="#0b1420"/>
-        </linearGradient>
-        <linearGradient id="lamp" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stop-color="#fff7cc"/>
-          <stop offset="50%" stop-color="#ffda72"/>
-          <stop offset="100%" stop-color="#fff0b0"/>
-        </linearGradient>
-        <radialGradient id="lightGlow">
-          <stop offset="0%" stop-color="#ffd978" stop-opacity=".65"/>
-          <stop offset="100%" stop-color="#ffd978" stop-opacity="0"/>
-        </radialGradient>
-        <pattern id="texture" width="38" height="38"
-          patternUnits="userSpaceOnUse">
-          <path d="M0 38L38 0" stroke="#ffffff"
-            stroke-opacity=".025" stroke-width="1"/>
-        </pattern>
-        <filter id="shadow" x="-100%" y="-100%"
-          width="300%" height="300%">
-          <feDropShadow dx="0" dy="14" stdDeviation="13"
-            flood-color="#000000" flood-opacity=".5"/>
-        </filter>
-      </defs>
-
-      <rect width="800" height="600" fill="url(#wall)"/>
-      <rect width="800" height="600" fill="url(#texture)"/>
-
-      <circle cx="400" cy="265" r="280" fill="url(#lightGlow)"/>
-      <path d="M400 270L180 520H620Z"
-        fill="#ffd978" opacity=".045"/>
-      <path d="M400 270L275 520H525Z"
-        fill="#fff2bb" opacity=".07"/>
-
-      <g filter="url(#shadow)">
-        <rect x="337" y="167" width="126" height="254"
-          rx="18" fill="#070b10" stroke="#8795a3"
-          stroke-width="5"/>
-
-        <rect x="354" y="185" width="92" height="218"
-          rx="9" fill="url(#lamp)"/>
-
-        <rect x="365" y="196" width="70" height="196"
-          rx="5" fill="#fff7d6" opacity=".75"/>
-
-        <path d="M354 190L446 190L446 255L354 355Z"
-          fill="#ffffff" opacity=".17"/>
-
-        <rect x="323" y="151" width="154" height="24"
-          rx="7" fill="#111820" stroke="#9aa8b6"
-          stroke-width="3"/>
-
-        <rect x="323" y="412" width="154" height="24"
-          rx="7" fill="#111820" stroke="#9aa8b6"
-          stroke-width="3"/>
-
-        <circle cx="349" cy="163" r="3" fill="#cbd5e1"/>
-        <circle cx="451" cy="163" r="3" fill="#cbd5e1"/>
-        <circle cx="349" cy="424" r="3" fill="#cbd5e1"/>
-        <circle cx="451" cy="424" r="3" fill="#cbd5e1"/>
-      </g>
-
-      <text x="400" y="500"
-        font-family="Arial,Helvetica,sans-serif"
-        font-size="30" font-weight="700"
-        text-anchor="middle" fill="#ffffff">
-        OUTDOOR LIGHTS
-      </text>
-
-      <text x="400" y="535"
-        font-family="Arial,Helvetica,sans-serif"
-        font-size="15" letter-spacing="4"
-        text-anchor="middle" fill="#facc15">
-        GARBBIS ELECTRICAL
-      </text>
-    </svg>
-  `
-
-  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`
-}
-
-const outdoorLightImage = createOutdoorLightImage()
 
 const defaultCategories = [
   {
@@ -215,6 +113,13 @@ const defaultCategories = [
     img: outdoorLightImage,
   },
   {
+    id: 'cat-9',
+    name: 'Solar Accessories',
+    slug: 'solar-accessories',
+    sort_order: 6,
+    img: solarAccessoriesImage,
+  },
+  {
     id: 'cat-4',
     name: 'Switches & Sockets',
     slug: 'switches-sockets',
@@ -232,21 +137,21 @@ const defaultCategories = [
     id: 'cat-6',
     name: 'Inverters',
     slug: 'inverters',
-    sort_order: 6,
+    sort_order: 7,
     img: 'https://acdn-us.mitiendanube.com/stores/003/582/147/products/8kw-bdc4513eb7fff146e917424027353474-640-0.webp',
   },
   {
     id: 'cat-7',
     name: 'Batteries',
     slug: 'batteries',
-    sort_order: 7,
+    sort_order: 8,
     img: 'https://web.jood.com.iq/mediafiles/products/cc0745fc-3433-4cf9-baad-51ff4754d7fd.png',
   },
   {
     id: 'cat-8',
     name: 'CCTV',
     slug: 'cctv',
-    sort_order: 8,
+    sort_order: 9,
     img: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=900&q=85',
   },
 ] as const
@@ -262,6 +167,7 @@ const categoryFallbackColors: Record<string, [string, string]> = {
   'outdoor-lights': ['#0f172a', '#fbbf24'],
   'switches-sockets': ['#334155', '#e2e8f0'],
   'solar-panels': ['#082f49', '#38bdf8'],
+  'solar-accessories': ['#082f49', '#38bdf8'],
   inverters: ['#1e293b', '#cbd5e1'],
   batteries: ['#064e3b', '#6ee7b7'],
   cctv: ['#18181b', '#a1a1aa'],
@@ -439,7 +345,7 @@ export default function Products() {
         ? (dbCategories as ShopCategory[])
         : (defaultCategories as unknown as ShopCategory[])
 
-    const result = source.map((category) => {
+    const result: ShopCategory[] = source.map((category): ShopCategory => {
       const name = category.name ?? 'Electrical Products'
       const slug = category.slug ?? ''
       const key = getCategoryKey(name, slug)
@@ -448,14 +354,13 @@ export default function Products() {
         (item) => item.slug === key,
       )
 
-      /*
-       * Outdoor Lights gets its local image directly.
-       * This avoids relying on database image URLs.
-       */
+      /* Use the selected real photo rather than a generated graphic. */
       let image: string
 
       if (key === 'outdoor-lights') {
         image = outdoorLightImage
+      } else if (key === 'solar-accessories') {
+        image = solarAccessoriesImage
       } else {
         image =
           preset?.img ||
@@ -489,8 +394,29 @@ export default function Products() {
       if (outdoorPreset) {
         result.push({
           ...outdoorPreset,
-          img: outdoorPreset.img ?? outdoorLightImage,
-        } as unknown as { img: string; id: string; slug: string; name: string; sort_order: number })
+          img: outdoorLightImage,
+        } as unknown as ShopCategory)
+      }
+    }
+
+    const hasSolarAccessories = result.some(
+      (category) =>
+        getCategoryKey(
+          category.name ?? '',
+          category.slug ?? '',
+        ) === 'solar-accessories',
+    )
+
+    if (!hasSolarAccessories) {
+      const solarAccessoriesPreset = defaultCategories.find(
+        (item) => item.slug === 'solar-accessories',
+      )
+
+      if (solarAccessoriesPreset) {
+        result.push({
+          ...solarAccessoriesPreset,
+          img: solarAccessoriesImage,
+        } as unknown as ShopCategory)
       }
     }
 
@@ -875,18 +801,17 @@ export default function Products() {
                         activeCategory,
                       ) === categoryKey
 
-                    /*
-                     * Outdoor Lights is assigned its local SVG
-                     * again at render time as an extra safeguard.
-                     */
+                    /* Prefer real photography for these key categories. */
                     const imageSrc =
                       categoryKey === 'outdoor-lights'
                         ? outdoorLightImage
-                        : category.img ||
-                          createCategoryFallback(
-                            category.name ?? 'Electrical Products',
-                            category.slug ?? '',
-                          )
+                        : categoryKey === 'solar-accessories'
+                          ? solarAccessoriesImage
+                          : category.img ||
+                            createCategoryFallback(
+                              category.name ?? 'Electrical Products',
+                              category.slug ?? '',
+                            )
 
                     return (
                       <button
@@ -927,10 +852,17 @@ export default function Products() {
                               }
 
                               image.dataset.fallbackApplied = 'true'
-                              image.src = createCategoryFallback(
-                                category.name ?? 'Electrical Products',
-                                category.slug ?? '',
-                              )
+
+                              if (categoryKey === 'outdoor-lights') {
+                                image.src = outdoorLightImageAlternate
+                              } else if (categoryKey === 'solar-accessories') {
+                                image.src = solarAccessoriesImageAlternate
+                              } else {
+                                image.src = createCategoryFallback(
+                                  category.name ?? 'Electrical Products',
+                                  category.slug ?? '',
+                                )
+                              }
                             }}
                             className="h-full w-full rounded-[50%] object-cover object-center transition duration-700 group-hover:scale-110"
                           />
