@@ -16,7 +16,7 @@ import {
   Image as ImageIcon,
 } from 'lucide-react'
 
-import { supabase } from '../lib/supabase'
+import { supabase, publicImageUrl } from '../lib/supabase'
 import { explainError } from '../lib/errors'
 import { usePageTitle } from '../lib/usePageTitle'
 import { buildWhatsAppUrl } from '../lib/whatsapp'
@@ -159,6 +159,7 @@ const defaultCategories = [
 type ShopCategory = Category & {
   img?: string
   sort_order?: number | null
+  image_path?: string | null
 }
 
 const categoryFallbackColors: Record<string, [string, string]> = {
@@ -354,14 +355,20 @@ export default function Products() {
         (item) => item.slug === key,
       )
 
-      /* Use the selected real photo rather than a generated graphic. */
       let image: string
 
-      if (key === 'outdoor-lights') {
+      // HIGHEST PRIORITY: Image uploaded by Admin in Supabase
+      if (category.image_path) {
+        image = publicImageUrl(category.image_path) ?? ''
+      } 
+      // SECOND PRIORITY: Custom assigned realistic product photos
+      else if (key === 'outdoor-lights') {
         image = outdoorLightImage
       } else if (key === 'solar-accessories') {
         image = solarAccessoriesImage
-      } else {
+      } 
+      // THIRD PRIORITY: Presets, placeholder images, or dynamic SVG generation
+      else {
         image =
           preset?.img ||
           category.img ||
@@ -374,10 +381,7 @@ export default function Products() {
       }
     })
 
-    /*
-     * Ensure the Outdoor Lights category still appears if it
-     * has not been created in Supabase yet.
-     */
+    /* Ensure specific categories appear if not populated yet */
     const hasOutdoor = result.some(
       (category) =>
         getCategoryKey(
@@ -390,7 +394,6 @@ export default function Products() {
       const outdoorPreset = defaultCategories.find(
         (item) => item.slug === 'outdoor-lights',
       )
-
       if (outdoorPreset) {
         result.push({
           ...outdoorPreset,
@@ -411,7 +414,6 @@ export default function Products() {
       const solarAccessoriesPreset = defaultCategories.find(
         (item) => item.slug === 'solar-accessories',
       )
-
       if (solarAccessoriesPreset) {
         result.push({
           ...solarAccessoriesPreset,
@@ -423,7 +425,6 @@ export default function Products() {
     return result.sort((a, b) => {
       const orderA = a.sort_order ?? 999
       const orderB = b.sort_order ?? 999
-
       return (
         orderA - orderB ||
         (a.name ?? '').localeCompare(b.name ?? '')
@@ -500,7 +501,6 @@ export default function Products() {
       if (sortBy === 'name-desc') {
         return (b.name ?? '').localeCompare(a.name ?? '')
       }
-
       return (a.name ?? '').localeCompare(b.name ?? '')
     })
 
@@ -518,15 +518,12 @@ export default function Products() {
 
   function chooseCategory(slug: string) {
     const next = new URLSearchParams(params)
-
     next.delete('subcat')
-
     if (slug === 'all') {
       next.delete('category')
     } else {
       next.set('category', slug)
     }
-
     setParams(next)
   }
 
@@ -554,7 +551,6 @@ export default function Products() {
 
     const next = new URLSearchParams(params)
     next.delete('q')
-
     setParams(next)
   }
 
@@ -643,9 +639,7 @@ export default function Products() {
   ].join('\n')
 
   const categoryGroups = [0, 1]
-
-  const hasActiveFilters =
-    appliedMin !== '' || appliedMax !== ''
+  const hasActiveFilters = appliedMin !== '' || appliedMax !== ''
 
   return (
     <main className="products-page min-h-screen overflow-hidden bg-white pb-16 text-slate-900">
@@ -713,8 +707,6 @@ export default function Products() {
               onChange={(event) => {
                 const value = event.target.value
                 setSearchInput(value)
-                // Filter immediately as the customer types; the Search button
-                // still saves the query in the URL for shareable searches.
                 setSearchQuery(value)
               }}
             />
@@ -759,11 +751,9 @@ export default function Products() {
               <Sparkles className="h-3.5 w-3.5" />
               Find what you need
             </div>
-
             <h2 className="mt-1 text-xl font-black tracking-tight text-slate-950 sm:text-2xl">
               Shop by category
             </h2>
-
             <p className="mt-1 text-xs text-slate-500 sm:text-sm">
               Explore lighting, solar and electrical solutions.
             </p>
@@ -801,17 +791,7 @@ export default function Products() {
                         activeCategory,
                       ) === categoryKey
 
-                    /* Prefer real photography for these key categories. */
-                    const imageSrc =
-                      categoryKey === 'outdoor-lights'
-                        ? outdoorLightImage
-                        : categoryKey === 'solar-accessories'
-                          ? solarAccessoriesImage
-                          : category.img ||
-                            createCategoryFallback(
-                              category.name ?? 'Electrical Products',
-                              category.slug ?? '',
-                            )
+                    const imageSrc = category.img || createCategoryFallback(category.name ?? 'Electrical Products', category.slug ?? '')
 
                     return (
                       <button
@@ -845,9 +825,7 @@ export default function Products() {
                             onError={(event) => {
                               const image = event.currentTarget
 
-                              if (
-                                image.dataset.fallbackApplied === 'true'
-                              ) {
+                              if (image.dataset.fallbackApplied === 'true') {
                                 return
                               }
 

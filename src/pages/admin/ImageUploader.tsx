@@ -64,7 +64,12 @@ export default function ImageUploader({ folder, paths, onChange, max }: Props) {
       <div className="flex flex-wrap gap-3">
         {paths.map((p) => (
           <div key={p} className="relative">
-            <img src={publicImageUrl(p) ?? ''} alt="Uploaded" className="h-24 w-24 rounded-lg border border-sand-200 object-cover" />
+            {/* Changed from object-cover to object-contain so images show fully without cropping */}
+            <img 
+              src={publicImageUrl(p) ?? ''} 
+              alt="Uploaded" 
+              className="h-24 w-24 rounded-lg border border-sand-200 bg-slate-50 object-contain p-1" 
+            />
             <button type="button" aria-label="Remove image" onClick={() => onChange(paths.filter((x) => x !== p))}
               className="absolute -right-2 -top-2 rounded-full bg-red-600 p-1 text-white shadow">
               <Trash2 className="h-3.5 w-3.5" />

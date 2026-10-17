@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useMemo } from 'react'
 import type { FormEvent } from 'react'
-import { Plus, Trash2 } from 'lucide-react'
+import { Plus, Trash2, Search, Filter } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 import { STORAGE_BUCKET } from '../../lib/config'
 import { explainError } from '../../lib/errors'
@@ -49,6 +49,10 @@ export default function ProductsAdmin() {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [initialPaths, setInitialPaths] = useState<string[]>([])
   const [busy, setBusy] = useState(false)
+
+  // New Search and Filter States
+  const [searchTerm, setSearchTerm] = useState('')
+  const [categoryFilter, setCategoryFilter] = useState('all')
 
   const load = useCallback(async () => {
     const [p, c] = await Promise.all([
@@ -172,6 +176,24 @@ export default function ProductsAdmin() {
     await load()
   }
 
+  // Calculate filtered products
+  const filteredProducts = useMemo(() => {
+    return products.filter((p) => {
+      const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                            (p.categories?.name || '').toLowerCase().includes(searchTerm.toLowerCase())
+      const matchesCat = categoryFilter === 'all' || p.category_id === categoryFilter
+      return matchesSearch && matchesCat
+    })
+  }, [products, searchTerm, categoryFilter])
+
+  // Calculate category stats
+  const categoryStats = useMemo(() => {
+    return categories.map(cat => ({
+      ...cat,
+      count: products.filter(p => p.category_id === cat.id).length
+    }))
+  }, [categories, products])
+
   if (loading) return <Loading />
 
   return (
@@ -181,17 +203,75 @@ export default function ProductsAdmin() {
 
       {!form && (
         <>
-          <button type="button" className={btnPrimary} onClick={openNew}><Plus className="h-4 w-4" /> Add product</button>
+          {/* HORIZONTAL INVENTORY DASHBOARD */}
+          <div className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 hide-scrollbar">
+            <div className="flex-shrink-0 w-36 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+              <p className="text-[10px] font-black uppercase tracking-wider text-slate-500">Total Products</p>
+              <p className="mt-1 text-3xl font-black text-slate-900">{products.length}</p>
+            </div>
+            {categoryStats.filter(c => c.count > 0).map(cat => (
+              <div key={cat.id} className="flex-shrink-0 w-36 rounded-2xl border border-slate-200 bg-slate-50 p-4 shadow-sm">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500 truncate" title={cat.name}>{cat.name}</p>
+                <p className="mt-1 text-3xl font-black text-slate-700">{cat.count}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* SEARCH & FILTERS BAR */}
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between bg-slate-100 p-3 rounded-2xl border border-slate-200">
+            <button type="button" className={btnPrimary} onClick={openNew}>
+              <Plus className="h-4 w-4" /> Add product
+            </button>
+            
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+              <div className="relative w-full sm:w-64">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <input 
+                  type="search" 
+                  placeholder="Search products..." 
+                  className={`${inputCls} pl-9`} 
+                  value={searchTerm} 
+                  onChange={(e) => setSearchTerm(e.target.value)} 
+                />
+              </div>
+              <div className="relative w-full sm:w-48">
+                <Filter className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <select 
+                  className={`${inputCls} pl-9 font-medium text-slate-700`} 
+                  value={categoryFilter} 
+                  onChange={(e) => setCategoryFilter(e.target.value)}
+                >
+                  <option value="all">All Categories</option>
+                  {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* PRODUCT LIST */}
           <div className={`${cardCls} divide-y divide-sand-200`}>
-            {products.length === 0 && <p className="p-5 text-sm text-slate-600">No products yet. Click "Add product".</p>}
-            {products.map((p) => (
-              <div key={p.id} className="flex flex-wrap items-center justify-between gap-3 p-4">
-                <div className="min-w-0">
-                  <p className="font-medium">{p.name}</p>
-                  <p className="text-xs text-slate-500">
-                    {p.categories?.name} &middot; {formatNaira(p.price_ngn)} &middot; {p.is_published ? 'Published' : 'Unpublished'}
-                  </p>
-                  <div className="mt-1"><AvailabilityBadge value={p.availability} /></div>
+            {filteredProducts.length === 0 && (
+              <p className="p-8 text-center text-sm font-medium text-slate-500">
+                No products found matching your criteria.
+              </p>
+            )}
+            {filteredProducts.map((p) => (
+              <div key={p.id} className="flex flex-wrap items-center justify-between gap-3 p-4 transition hover:bg-slate-50">
+                <div className="min-w-0 flex items-center gap-4">
+                  <div className="w-12 h-12 bg-slate-100 border border-slate-200 rounded-lg overflow-hidden shrink-0 hidden sm:block">
+                    {p.image_paths?.[0] ? (
+                      <img src={`${supabase.storage.from(STORAGE_BUCKET).getPublicUrl(p.image_paths[0]).data.publicUrl}`} alt="" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-slate-400 text-xs">No img</div>
+                    )}
+                  </div>
+                  <div>
+                    <p className="font-bold text-slate-900 truncate">{p.name}</p>
+                    <p className="text-xs text-slate-500 mt-0.5">
+                      {p.categories?.name} &middot; {formatNaira(p.price_ngn)} &middot; <span className={p.is_published ? 'text-emerald-600 font-semibold' : 'text-amber-600 font-semibold'}>{p.is_published ? 'Published' : 'Unpublished'}</span>
+                    </p>
+                    <div className="mt-1.5"><AvailabilityBadge value={p.availability} /></div>
+                  </div>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <button type="button" className={btnSecondary} onClick={() => void togglePublished(p)}>
@@ -278,8 +358,8 @@ export default function ProductsAdmin() {
           </fieldset>
 
           <div>
-            <p className={labelCls}>Images (JPG, PNG or WebP, up to 5 MB each, max 6)</p>
-            <ImageUploader folder="products" paths={form.image_paths} max={6}
+            <p className={labelCls}>Images (JPG, PNG or WebP, up to 5 MB each, max 10)</p>
+            <ImageUploader folder="products" paths={form.image_paths} max={10}
               onChange={(paths) => patch({ image_paths: paths })} />
           </div>
 

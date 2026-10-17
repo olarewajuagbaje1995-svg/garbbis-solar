@@ -220,7 +220,7 @@ export default function EnquiryForm({ initialItem }: { initialItem?: InitialItem
         </div>
       </div>
 
-      {/* NEW: Budget & Timeline Qualifiers */}
+      {/* Updated Budget & Timeline Qualifiers */}
       <div className="grid gap-5 sm:grid-cols-2 p-4 bg-slate-50 border border-slate-200 rounded-xl">
         <div>
           <label htmlFor="timeline" className="mb-1 block text-sm font-bold text-slate-800">When do you need this?</label>
@@ -238,10 +238,15 @@ export default function EnquiryForm({ initialItem }: { initialItem?: InitialItem
           <select id="budget" className={`${inputCls} font-medium text-emerald-800`} value={budget} disabled={busy}
             onChange={(e) => setBudget(e.target.value)}>
             <option value="">Select budget range...</option>
-            <option value="Under ₦500k">Under ₦500,000 (Basic load)</option>
-            <option value="₦500k - ₦1.5m">₦500,000 - ₦1.5m (Standard setup)</option>
-            <option value="₦1.5m - ₦3m">₦1.5m - ₦3m (Large load/office)</option>
-            <option value="Over ₦3m">Over ₦3m (Heavy duty/commercial)</option>
+            <option value="Under ₦500k">Under ₦500k</option>
+            <option value="₦500k - ₦1.5m">₦500k - ₦1.5m</option>
+            <option value="₦1.5m - ₦3m">₦1.5m - ₦3m</option>
+            <option value="₦3m - ₦5m">₦3m - ₦5m</option>
+            <option value="₦5m - ₦10m">₦5m - ₦10m</option>
+            <option value="₦10m - ₦20m">₦10m - ₦20m</option>
+            <option value="₦20m - ₦35m">₦20m - ₦35m</option>
+            <option value="₦35m - ₦50m">₦35m - ₦50m</option>
+            <option value="Over ₦50m [Industrial Solar Setup]">Over ₦50m [Industrial Solar Setup]</option>
             <option value="Need an assessment">Not sure / Need an assessment</option>
           </select>
         </div>
