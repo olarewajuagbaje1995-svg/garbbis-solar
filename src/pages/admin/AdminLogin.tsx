@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { LoaderCircle, ShieldCheck, Sun } from 'lucide-react'
+import { LoaderCircle, ShieldCheck, Sun, Eye, EyeOff } from 'lucide-react'
 import { useAuth } from '../../auth/auth-context'
 import { BUSINESS, LOGO_SRC } from '../../lib/config'
 import { btnPrimary, cardCls, inputCls, labelCls } from '../../lib/styles'
@@ -16,6 +16,7 @@ export default function AdminLogin() {
   const location = useLocation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const [logoFailed, setLogoFailed] = useState(false)
@@ -83,8 +84,26 @@ export default function AdminLogin() {
             </div>
             <div>
               <label htmlFor="password" className={labelCls}>Password</label>
-              <input id="password" type="password" autoComplete="current-password" className={inputCls}
-                value={password} onChange={(e) => setPassword(e.target.value)} disabled={busy} placeholder="••••••••" />
+              <div className="relative flex items-center">
+                <input 
+                  id="password" 
+                  type={showPassword ? "text" : "password"} 
+                  autoComplete="current-password" 
+                  className={`${inputCls} pr-12 w-full`}
+                  value={password} 
+                  onChange={(e) => setPassword(e.target.value)} 
+                  disabled={busy} 
+                  placeholder="••••••••" 
+                />
+                <button 
+                  type="button" 
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 text-slate-400 hover:text-slate-600 focus:outline-none"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </button>
+              </div>
             </div>
             <button type="submit" className={`${btnPrimary} w-full py-3`} disabled={busy}>
               {busy ? <><LoaderCircle className="h-4 w-4 animate-spin" aria-hidden="true" /> Logging in...</> : 'Log in to Dashboard'}

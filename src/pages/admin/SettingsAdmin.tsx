@@ -38,7 +38,7 @@ export default function SettingsAdmin() {
     }
 
     setBusy(true)
-    // Call our secure Postgres function to update and confirm the email instantly
+    // Call secure Postgres function to update and confirm the email instantly
     const { error: err } = await supabase.rpc('update_user_email', { new_email: newEmail })
     setBusy(false)
 
@@ -153,13 +153,13 @@ export default function SettingsAdmin() {
               </div>
               <div>
                 <h2 className="text-lg font-bold text-[#071726]">Change Login Email</h2>
-                <p className="text-xs text-slate-500">Update the Gmail address you use to sign in.</p>
+                <p className="text-xs text-slate-500">Update the email address used to sign in.</p>
               </div>
             </div>
 
             <form onSubmit={handleUpdateEmail} className="mt-6 space-y-4" noValidate>
               <div>
-                <label htmlFor="admin-email" className={labelCls}>Login Email (Gmail)</label>
+                <label htmlFor="admin-email" className={labelCls}>Login Email</label>
                 <input id="admin-email" type="email" className={inputCls} value={email}
                   onChange={(e) => setEmail(e.target.value)} disabled={busy} required />
               </div>
@@ -185,7 +185,7 @@ export default function SettingsAdmin() {
               <div>
                 <label htmlFor="admin-name" className={labelCls}>Display Name</label>
                 <input id="admin-name" type="text" className={inputCls} value={adminName}
-                  onChange={(e) => setAdminName(e.target.value)} disabled={busy} placeholder="e.g. Agbaje Olarewaju" />
+                  onChange={(e) => setAdminName(e.target.value)} disabled={busy} placeholder="e.g. Client Name" />
               </div>
               <button type="submit" className={btnPrimary} disabled={busy}>
                 {busy ? 'Updating...' : 'Update admin profile'}
