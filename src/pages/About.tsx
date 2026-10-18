@@ -345,7 +345,7 @@ export default function About() {
             {/* CEO SPOTLIGHT */}
             {ceo && (
               <div className="bg-white rounded-[2.5rem] border border-slate-200 overflow-hidden shadow-xl shadow-slate-900/5 mb-16 max-w-5xl mx-auto grid md:grid-cols-12 items-start p-8 sm:p-12 gap-10">
-                {/* Left Side: Expanded image container */}
+                {/* Left Side: Expanded uncropped image container */}
                 <div className="md:col-span-6 w-full bg-slate-50 rounded-3xl overflow-hidden flex items-center justify-center p-8 border border-slate-100">
                   <img 
                     src={ceo.image_url} 
@@ -379,11 +379,11 @@ export default function About() {
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
                   {team.map((member) => (
                     <div key={member.id} className="text-center group">
-                      <div className="aspect-square rounded-2xl overflow-hidden bg-slate-100 mb-4 shadow-sm border border-slate-200">
+                      <div className="aspect-square rounded-2xl overflow-hidden bg-slate-50 mb-4 shadow-sm border border-slate-200 p-2 flex items-center justify-center">
                         <img 
                           src={member.image_url} 
                           alt={member.name} 
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                          className="w-full h-full object-contain rounded-xl transition-transform duration-500 group-hover:scale-105" 
                         />
                       </div>
                       <h4 className="font-extrabold text-sm text-[#071726] line-clamp-1">{member.name}</h4>

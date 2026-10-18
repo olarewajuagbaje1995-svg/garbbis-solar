@@ -100,15 +100,15 @@ export default function OurWork() {
             </h2>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {images.map((img) => (
-                <article key={img.id} className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                  <div className="aspect-[4/3] overflow-hidden bg-slate-100">
+                <article key={img.id} className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col">
+                  <div className="w-full bg-slate-900/5 flex items-center justify-center p-4">
                     <img 
                       src={img.media_url} 
                       alt={img.title} 
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                      className="max-h-[360px] w-auto max-w-full object-contain rounded-lg transition-transform duration-500 group-hover:scale-105" 
                     />
                   </div>
-                  <div className="p-5">
+                  <div className="p-5 mt-auto">
                     <h3 className="font-bold text-[#071726] text-lg">{img.title}</h3>
                     {img.description && (
                       <p className="mt-1 text-sm text-slate-500 line-clamp-2">
