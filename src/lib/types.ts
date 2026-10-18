@@ -24,6 +24,7 @@ export interface Product {
   specifications: Spec[]
   image_paths: string[]
   is_published: boolean
+  stock_quantity?: number // Added stock count for inventory tracking
   created_at: string
   updated_at: string
   categories: { name: string; slug: string } | null

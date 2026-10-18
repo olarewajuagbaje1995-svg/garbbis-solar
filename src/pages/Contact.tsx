@@ -1,4 +1,3 @@
-
 import {
   MessageCircle,
   Phone,
@@ -24,6 +23,8 @@ export default function Contact() {
     'Contact Garbbis Electrical and Maintenance Limited by phone, WhatsApp or enquiry form.',
   )
 
+  const MAPS_URL = 'https://maps.app.goo.gl/U6P8HKEdVsTjojxS9?g_st=awb'
+
   const contactCards = [
     {
       title: 'Call our team',
@@ -45,9 +46,7 @@ export default function Contact() {
       title: 'Visit our location',
       description: 'Find us for enquiries and project discussions.',
       value: BUSINESS.address,
-      href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-        BUSINESS.address,
-      )}`,
+      href: MAPS_URL,
       icon: MapPin,
       action: 'View directions',
     },
@@ -317,9 +316,14 @@ export default function Contact() {
                     <p className="text-xs font-extrabold text-slate-900">
                       Business address
                     </p>
-                    <p className="mt-1 break-words text-sm leading-6 text-slate-600">
+                    <a
+                      href={MAPS_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-1 block break-words text-sm leading-6 text-slate-600 transition hover:text-amber-700 hover:underline"
+                    >
                       {BUSINESS.address}
-                    </p>
+                    </a>
                   </div>
                 </div>
 

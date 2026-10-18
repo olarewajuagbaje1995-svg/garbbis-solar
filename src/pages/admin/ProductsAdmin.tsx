@@ -28,6 +28,7 @@ interface FormState {
   description: string
   category_id: string
   price: string
+  stock_quantity: string
   availability: Availability
   specs: Spec[]
   image_paths: string[]
@@ -41,6 +42,7 @@ const blank = (categoryId: string): FormState => ({
   description: '',
   category_id: categoryId,
   price: '',
+  stock_quantity: '0',
   availability: 'contact',
   specs: [],
   image_paths: [],
@@ -102,6 +104,7 @@ export default function ProductsAdmin() {
       description: p.description ?? '',
       category_id: p.category_id,
       price: p.price_ngn === null ? '' : String(p.price_ngn),
+      stock_quantity: p.stock_quantity !== undefined ? String(p.stock_quantity) : '0',
       availability: p.availability,
       specs: p.specifications ?? [],
       image_paths: p.image_paths ?? [],
@@ -135,6 +138,9 @@ export default function ProductsAdmin() {
       if (!Number.isFinite(price) || price < 0) return setError('Price must be a number of naira, 0 or more. Leave blank for "Contact for price".')
     }
 
+    const stockQty = parseInt(form.stock_quantity, 10)
+    if (!Number.isFinite(stockQty) || stockQty < 0) return setError('Stock quantity must be 0 or more.')
+
     const specs = form.specs
       .map((s) => ({ label: s.label.trim(), value: s.value.trim() }))
       .filter((s) => s.label || s.value)
@@ -148,6 +154,7 @@ export default function ProductsAdmin() {
       description: form.description.trim(),
       category_id: form.category_id,
       price_ngn: price,
+      stock_quantity: stockQty,
       availability: form.availability,
       specifications: specs,
       image_paths: form.image_paths,
@@ -188,7 +195,7 @@ export default function ProductsAdmin() {
     return products.filter((p) => {
       const catName = p.categories?.name ?? ''
       const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                            catName.toLowerCase().includes(searchTerm.toLowerCase())
+                          catName.toLowerCase().includes(searchTerm.toLowerCase())
       const matchesCat = categoryFilter === 'all' || p.category_id === categoryFilter
       return matchesSearch && matchesCat
     })
@@ -277,7 +284,7 @@ export default function ProductsAdmin() {
                     <div>
                       <p className="font-bold text-slate-900 truncate">{p.name}</p>
                       <p className="text-xs text-slate-500 mt-0.5">
-                        {p.categories?.name ?? 'Uncategorized'} &middot; {formatNaira(p.price_ngn)} &middot; <span className={p.is_published ? 'text-emerald-600 font-semibold' : 'text-amber-600 font-semibold'}>{p.is_published ? 'Published' : 'Unpublished'}</span>
+                        {p.categories?.name ?? 'Uncategorized'} &middot; {formatNaira(p.price_ngn)} &middot; Stock: <span className="font-bold text-slate-800">{p.stock_quantity ?? 0}</span> &middot; <span className={p.is_published ? 'text-emerald-600 font-semibold' : 'text-amber-600 font-semibold'}>{p.is_published ? 'Published' : 'Unpublished'}</span>
                       </p>
                       <div className="mt-1.5"><AvailabilityBadge value={p.availability} /></div>
                     </div>
@@ -323,6 +330,11 @@ export default function ProductsAdmin() {
                 placeholder="e.g. 450000" onChange={(e) => patch({ price: e.target.value })} />
             </div>
             <div>
+              <label htmlFor="p-stock" className={labelCls}>Stock Quantity (In Score)</label>
+              <input id="p-stock" type="number" min="0" className={inputCls} value={form.stock_quantity} disabled={busy}
+                placeholder="e.g. 15" onChange={(e) => patch({ stock_quantity: e.target.value })} />
+            </div>
+            <div>
               <label htmlFor="p-avail" className={labelCls}>Availability</label>
               <select id="p-avail" className={inputCls} value={form.availability} disabled={busy}
                 onChange={(e) => patch({ availability: e.target.value as Availability })}>
@@ -331,7 +343,7 @@ export default function ProductsAdmin() {
                 ))}
               </select>
             </div>
-            <label className="flex items-center gap-2 pt-6 text-sm font-medium">
+            <label className="flex items-center gap-2 pt-6 text-sm font-medium sm:col-span-2">
               <input type="checkbox" checked={form.is_published} disabled={busy}
                 onChange={(e) => patch({ is_published: e.target.checked })} />
               Published (visible on the public website)

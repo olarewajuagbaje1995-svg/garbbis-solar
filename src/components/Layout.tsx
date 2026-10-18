@@ -46,6 +46,8 @@ export default function Layout() {
   const [open, setOpen] = useState(false)
   const { pathname } = useLocation()
 
+  const MAPS_URL = 'https://maps.app.goo.gl/U6P8HKEdVsTjojxS9?g_st=awb'
+
   useEffect(() => {
     setOpen(false)
   }, [pathname])
@@ -154,7 +156,14 @@ export default function Layout() {
               <ul className="space-y-3 text-sm">
                 <li className="flex items-start gap-3">
                   <MapPin className="h-4 w-4 text-yellow-400 shrink-0 mt-0.5" />
-                  <span>{BUSINESS.address}</span>
+                  <a 
+                    href={MAPS_URL} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="transition hover:text-yellow-400 hover:underline"
+                  >
+                    {BUSINESS.address}
+                  </a>
                 </li>
                 <li className="flex items-center gap-3">
                   <Phone className="h-4 w-4 text-yellow-400 shrink-0" />
