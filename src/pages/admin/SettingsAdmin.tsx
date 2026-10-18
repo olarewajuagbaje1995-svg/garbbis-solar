@@ -10,6 +10,7 @@ import Notice from '../../components/Notice'
 export default function SettingsAdmin() {
   const { session } = useAuth()
   const [email, setEmail] = useState(session?.user.email ?? '')
+  const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [busy, setBusy] = useState(false)
@@ -42,6 +43,11 @@ export default function SettingsAdmin() {
     setError(null)
     setSuccess(null)
 
+    if (!currentPassword) {
+      setError('Enter your current password.')
+      return
+    }
+
     if (!newPassword) {
       setError('Enter a new password.')
       return
@@ -58,6 +64,27 @@ export default function SettingsAdmin() {
     }
 
     setBusy(true)
+
+    // 1. Verify current password by signing in / re-authenticating
+    const userEmail = session?.user.email
+    if (!userEmail) {
+      setError('User session not found.')
+      setBusy(false)
+      return
+    }
+
+    const { error: signInErr } = await supabase.auth.signInWithPassword({
+      email: userEmail,
+      password: currentPassword,
+    })
+
+    if (signInErr) {
+      setBusy(false)
+      setError('Incorrect current password.')
+      return
+    }
+
+    // 2. Proceed with updating to the new password
     const { error: err } = await supabase.auth.updateUser({ password: newPassword })
     setBusy(false)
 
@@ -65,6 +92,7 @@ export default function SettingsAdmin() {
       setError(explainError(err))
     } else {
       setSuccess('Password updated successfully!')
+      setCurrentPassword('')
       setNewPassword('')
       setConfirmPassword('')
     }
@@ -116,6 +144,12 @@ export default function SettingsAdmin() {
             </div>
 
             <form onSubmit={handleUpdatePassword} className="mt-6 space-y-4" noValidate>
+              <div>
+                <label htmlFor="current-password" className={labelCls}>Current Password</label>
+                <input id="current-password" type="password" className={inputCls} value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)} disabled={busy} placeholder="Enter current password" />
+              </div>
+
               <div>
                 <label htmlFor="new-password" className={labelCls}>New Password</label>
                 <input id="new-password" type="password" className={inputCls} value={newPassword}

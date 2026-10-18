@@ -1,4 +1,4 @@
-
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {
   ShieldCheck,
@@ -13,10 +13,21 @@ import {
   Award,
   Leaf,
   Lightbulb,
+  Users
 } from 'lucide-react'
+import { supabase } from '../lib/supabase'
 import { usePageTitle } from '../lib/usePageTitle'
 import { BUSINESS } from '../lib/config'
 import { btnPrimary, btnSecondary } from '../lib/styles'
+
+interface TeamMember {
+  id: string
+  name: string
+  role_title: string
+  description?: string
+  image_url: string
+  is_ceo: boolean
+}
 
 const missionPoints = [
   'Delivering affordable and sustainable solar energy solutions that empower our customers and protect the environment.',
@@ -74,14 +85,30 @@ export default function About() {
     `Learn about ${BUSINESS.name}, our FIRST TAPE values, and our mission.`,
   )
 
+  const [ceo, setCeo] = useState<TeamMember | null>(null)
+  const [team, setTeam] = useState<TeamMember[]>([])
+
+  useEffect(() => {
+    async function loadMembers() {
+      const { data } = await supabase
+        .from('team_members')
+        .select('*')
+        .order('created_at', { ascending: true })
+
+      if (data) {
+        setCeo(data.find((m) => m.is_ceo) ?? null)
+        setTeam(data.filter((m) => !m.is_ceo).slice(0, 10))
+      }
+    }
+    loadMembers()
+  }, [])
+
   return (
     <div className="about-page min-h-screen overflow-hidden bg-sand-50 pb-20">
 
       {/* ANIMATED HERO */}
       <section className="about-hero relative isolate overflow-hidden bg-forest-800 px-5 py-24 text-center text-white sm:px-8 sm:py-32 lg:py-36">
-        {/* Decorative background */}
         <div className="hero-grid absolute inset-0 -z-10" aria-hidden="true" />
-
         <div className="hero-orb hero-orb-one absolute -left-24 top-10 -z-10 h-72 w-72 rounded-full bg-green-400/20 blur-3xl" />
         <div className="hero-orb hero-orb-two absolute -right-20 bottom-0 -z-10 h-96 w-96 rounded-full bg-yellow-300/10 blur-3xl" />
         <div className="hero-orb hero-orb-three absolute left-1/2 top-1/2 -z-10 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-400/10 blur-3xl" />
@@ -408,6 +435,64 @@ export default function About() {
           </div>
         </section>
 
+        {/* TEAM & LEADERSHIP SECTION */}
+        {(ceo || team.length > 0) && (
+          <section className="reveal-section mt-24">
+            <div className="mx-auto max-w-3xl text-center mb-12">
+              <span className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.16em] text-amber-800">
+                <Users className="h-4 w-4" />
+                Our People
+              </span>
+              <h2 className="mt-5 text-3xl font-black tracking-tight text-forest-800 sm:text-4xl">
+                Leadership That Powers Progress
+              </h2>
+            </div>
+
+            {/* CEO SPOTLIGHT */}
+            {ceo && (
+              <div className="bg-white rounded-[2rem] p-8 mb-16 border border-slate-200 grid md:grid-cols-2 gap-10 items-center shadow-xl shadow-slate-900/5">
+                <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-md">
+                  <img src={ceo.image_url} alt={ceo.name} className="w-full h-full object-cover" />
+                </div>
+                <div className="space-y-5">
+                  <span className="inline-flex text-xs font-bold text-amber-700 bg-amber-100 px-3 py-1.5 rounded-full uppercase tracking-wider">
+                    Meet Our CEO
+                  </span>
+                  <h3 className="text-3xl font-black text-forest-800">{ceo.name}</h3>
+                  <p className="text-base font-bold text-forest-700/80">{ceo.role_title}</p>
+                  <p className="text-slate-600 leading-relaxed">
+                    {ceo.description || "Leading Garbbis Electrical and Maintenance Limited with a vision for sustainable and reliable power solutions."}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* TECHNICAL TEAM GRID */}
+            {team.length > 0 && (
+              <div>
+                <h3 className="text-xl font-black text-forest-800 mb-8 pb-3 border-b-2 border-green-100 inline-block">
+                  Our Technical Team
+                </h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                  {team.map((member) => (
+                    <div key={member.id} className="text-center group">
+                      <div className="aspect-square rounded-2xl overflow-hidden bg-slate-100 mb-4 shadow-sm border border-slate-200">
+                        <img 
+                          src={member.image_url} 
+                          alt={member.name} 
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                        />
+                      </div>
+                      <h4 className="font-extrabold text-sm text-forest-800 line-clamp-1">{member.name}</h4>
+                      <p className="text-xs font-medium text-slate-500 mt-1 line-clamp-1">{member.role_title}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+        )}
+
         {/* FINAL CTA */}
         <section className="reveal-section relative mt-24 overflow-hidden rounded-[2rem] border border-green-100 bg-gradient-to-br from-green-50 via-white to-emerald-50 px-6 py-14 text-center sm:px-12 sm:py-16">
           <div className="pointer-events-none absolute -left-12 -top-12 h-48 w-48 rounded-full bg-green-200/40 blur-3xl" />
@@ -535,10 +620,4 @@ export default function About() {
             animation-duration: 0.01ms !important;
             animation-iteration-count: 1 !important;
             scroll-behavior: auto !important;
-            transition-duration: 0.01ms !important;
-          }
-        }
-      `}</style>
-    </div>
-  )
-}
+            transition

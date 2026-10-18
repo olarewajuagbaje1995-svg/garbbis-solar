@@ -23,6 +23,7 @@ import type { Product } from '../lib/types'
 import ProductCard from '../components/ProductCard'
 import Loading from '../components/Loading'
 import Notice from '../components/Notice'
+import HomeReviews from '../components/HomeReviews'
 
 const slides = [
   {
@@ -842,6 +843,9 @@ export default function Home() {
           )}
         </div>
       </section>
+
+      {/* FEATURED REVIEWS */}
+      <HomeReviews />
 
       {/* GLOBAL ANIMATION STYLES */}
 
