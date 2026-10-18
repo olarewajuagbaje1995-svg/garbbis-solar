@@ -9,9 +9,11 @@ import Notice from './Notice'
 
 const links = [
   { to: '/', label: 'Home', end: true },
+  { to: '/about', label: 'About Us', end: false },
   { to: '/products', label: 'Products', end: false },
   { to: '/services', label: 'Services', end: false },
-  { to: '/about', label: 'About', end: false },
+  { to: '/our-work', label: 'Our Work', end: false },
+  { to: '/reviews', label: 'Reviews', end: false },
   { to: '/contact', label: 'Contact', end: false },
 ]
 
@@ -20,12 +22,12 @@ function Logo() {
   return (
     <Link to="/" className="flex items-center gap-2.5" aria-label={`${BUSINESS.name} home`}>
       {failed ? (
-        <Sun className="h-8 w-8 text-forest-600" aria-hidden="true" />
+        <Sun className="h-8 w-8 text-[#071726]" aria-hidden="true" />
       ) : (
         <img src={LOGO_SRC} alt={`${BUSINESS.shortName} logo`} className="h-12 w-auto"
           onError={() => setFailed(true)} />
       )}
-      <span className="hidden text-sm font-black leading-tight text-forest-900 sm:block">
+      <span className="hidden text-sm font-black leading-tight text-[#071726] sm:block">
         Garbbis Electrical<br />&amp; Maintenance Ltd
       </span>
     </Link>
@@ -50,18 +52,18 @@ export default function Layout() {
 
   const linkCls = ({ isActive }: { isActive: boolean }) =>
     `rounded-lg px-3 py-2 text-sm font-bold tracking-wide transition ${
-      isActive ? 'bg-forest-50 text-forest-700' : 'text-slate-700 hover:text-forest-700'
+      isActive ? 'bg-yellow-50 text-[#071726]' : 'text-slate-700 hover:text-[#0b2134]'
     }`
 
   return (
-    <div className="flex min-h-screen flex-col bg-sand-50 text-slate-900 font-sans">
+    <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900 font-sans">
       <ScrollToTop />
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-white focus:p-2">
         Skip to content
       </a>
 
       {/* Sticky Header */}
-      <header className="sticky top-0 z-40 border-b border-sand-200 bg-white/95 backdrop-blur shadow-sm">
+      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur shadow-sm">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
           <Logo />
           <nav className="hidden items-center gap-1.5 md:flex" aria-label="Main">
@@ -79,7 +81,7 @@ export default function Layout() {
           </button>
         </div>
         {open && (
-          <nav id="mobile-nav" className="border-t border-sand-200 bg-white px-4 py-4 md:hidden" aria-label="Mobile">
+          <nav id="mobile-nav" className="border-t border-slate-200 bg-white px-4 py-4 md:hidden" aria-label="Mobile">
             <div className="flex flex-col gap-2">
               {links.map((l) => (
                 <NavLink key={l.to} to={l.to} end={l.end} className={linkCls}>{l.label}</NavLink>
@@ -107,18 +109,18 @@ export default function Layout() {
       </main>
 
       {/* Upgraded Professional Footer */}
-      <footer className="bg-forest-800 text-slate-300">
+      <footer className="bg-[#071726] text-slate-300">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-4">
             <div className="space-y-4 lg:col-span-1">
               <div className="flex items-center gap-2.5 text-white">
-                <Sun className="h-7 w-7 text-green-400" />
+                <Sun className="h-7 w-7 text-yellow-400" />
                 <span className="font-black text-lg">Garbbis Electrical</span>
               </div>
               <p className="text-sm leading-relaxed text-slate-400 font-medium">
                 {BUSINESS.motto}
               </p>
-              <div className="inline-flex items-center gap-2 rounded-full bg-green-500/10 border border-green-500/20 px-3 py-1 text-xs font-semibold text-green-400">
+              <div className="inline-flex items-center gap-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 px-3 py-1 text-xs font-semibold text-yellow-400">
                 <ShieldCheck className="h-4 w-4" /> SAFE &middot; RELIABLE &middot; HIGH-QUALITY
               </div>
             </div>
@@ -128,7 +130,7 @@ export default function Layout() {
               <ul className="mt-4 space-y-2.5 text-sm">
                 {links.map((l) => (
                   <li key={l.to}>
-                    <Link to={l.to} className="transition hover:text-green-400 hover:translate-x-1 inline-block">
+                    <Link to={l.to} className="transition hover:text-yellow-400 hover:translate-x-1 inline-block">
                       &rarr; {l.label}
                     </Link>
                   </li>
@@ -151,32 +153,32 @@ export default function Layout() {
               <p className="font-bold text-white text-base">Contact Us</p>
               <ul className="space-y-3 text-sm">
                 <li className="flex items-start gap-3">
-                  <MapPin className="h-4 w-4 text-green-400 shrink-0 mt-0.5" />
+                  <MapPin className="h-4 w-4 text-yellow-400 shrink-0 mt-0.5" />
                   <span>{BUSINESS.address}</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <Phone className="h-4 w-4 text-green-400 shrink-0" />
+                  <Phone className="h-4 w-4 text-yellow-400 shrink-0" />
                   <a href={`tel:+${BUSINESS.whatsappNumber}`} className="transition hover:text-white">{BUSINESS.phoneDisplay}</a>
                 </li>
                 <li className="flex items-center gap-3">
-                  <Mail className="h-4 w-4 text-green-400 shrink-0" />
+                  <Mail className="h-4 w-4 text-yellow-400 shrink-0" />
                   <a href={`mailto:${BUSINESS.email}`} className="transition hover:text-white">{BUSINESS.email}</a>
                 </li>
               </ul>
               <div className="pt-2 flex gap-3">
-                <a href={BUSINESS.instagram} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-green-500 hover:text-white transition text-xs font-bold text-slate-300">
+                <a href={BUSINESS.instagram} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-yellow-500 hover:text-[#071726] transition text-xs font-bold text-slate-300">
                   Instagram
                 </a>
-                <a href={BUSINESS.tiktok} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-green-500 hover:text-white transition text-xs font-bold text-slate-300 flex items-center gap-1">
+                <a href={BUSINESS.tiktok} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-yellow-500 hover:text-[#071726] transition text-xs font-bold text-slate-300 flex items-center gap-1">
                   <Video className="h-3.5 w-3.5" /> TikTok
                 </a>
               </div>
             </div>
           </div>
 
-          <div className="mt-12 border-t border-forest-900 pt-8 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-400">
+          <div className="mt-12 border-t border-[#0b2134] pt-8 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-400">
             <p>&copy; {new Date().getFullYear()} {BUSINESS.name}. All rights reserved.</p>
-            <p className="flex items-center gap-1 font-medium tracking-widest text-green-400">
+            <p className="flex items-center gap-1 font-medium tracking-widest text-yellow-400">
               FIRST TAPE VALUES
             </p>
           </div>

@@ -9,14 +9,20 @@ import EnquiriesAdmin from './EnquiriesAdmin'
 import ProductsAdmin from './ProductsAdmin'
 import ServicesAdmin from './ServicesAdmin'
 import SettingsAdmin from './SettingsAdmin'
+import AdminTeam from './AdminTeam'
+import AdminWork from './AdminWork'
+import AdminReviews from './AdminReviews'
 
-type Tab = 'products' | 'services' | 'categories' | 'enquiries' | 'settings'
+type Tab = 'products' | 'services' | 'categories' | 'enquiries' | 'team' | 'portfolio' | 'reviews' | 'settings'
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'products', label: 'Products' },
   { id: 'services', label: 'Services' },
   { id: 'categories', label: 'Categories' },
   { id: 'enquiries', label: 'Enquiries' },
+  { id: 'team', label: 'Team' },
+  { id: 'portfolio', label: 'Portfolio' },
+  { id: 'reviews', label: 'Reviews' },
   { id: 'settings', label: 'Settings' },
 ]
 
@@ -84,6 +90,9 @@ export default function AdminDashboard() {
         {tab === 'services' && <ServicesAdmin />}
         {tab === 'categories' && <CategoriesAdmin />}
         {tab === 'enquiries' && <EnquiriesAdmin />}
+        {tab === 'team' && <AdminTeam />}
+        {tab === 'portfolio' && <AdminWork />}
+        {tab === 'reviews' && <AdminReviews />}
         {tab === 'settings' && <SettingsAdmin />}
       </main>
     </div>

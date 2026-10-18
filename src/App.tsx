@@ -7,6 +7,8 @@ import ProductDetail from './pages/ProductDetail'
 import Services from './pages/Services'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import OurWork from './pages/OurWork'
+import Reviews from './pages/Reviews'
 import NotFound from './pages/NotFound'
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminDashboard from './pages/admin/AdminDashboard'
@@ -20,6 +22,8 @@ export default function App() {
         <Route path="products/:slug" element={<ProductDetail />} />
         <Route path="services" element={<Services />} />
         <Route path="about" element={<About />} />
+        <Route path="our-work" element={<OurWork />} />
+        <Route path="reviews" element={<Reviews />} />
         <Route path="contact" element={<Contact />} />
         <Route path="*" element={<NotFound />} />
       </Route>

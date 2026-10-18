@@ -104,17 +104,17 @@ export default function About() {
   }, [])
 
   return (
-    <div className="about-page min-h-screen overflow-hidden bg-sand-50 pb-20">
+    <div className="about-page min-h-screen overflow-hidden bg-slate-50 pb-20">
 
       {/* ANIMATED HERO */}
-      <section className="about-hero relative isolate overflow-hidden bg-forest-800 px-5 py-24 text-center text-white sm:px-8 sm:py-32 lg:py-36">
+      <section className="about-hero relative isolate overflow-hidden bg-[#071726] px-5 py-24 text-center text-white sm:px-8 sm:py-32 lg:py-36">
         <div className="hero-grid absolute inset-0 -z-10" aria-hidden="true" />
-        <div className="hero-orb hero-orb-one absolute -left-24 top-10 -z-10 h-72 w-72 rounded-full bg-green-400/20 blur-3xl" />
-        <div className="hero-orb hero-orb-two absolute -right-20 bottom-0 -z-10 h-96 w-96 rounded-full bg-yellow-300/10 blur-3xl" />
-        <div className="hero-orb hero-orb-three absolute left-1/2 top-1/2 -z-10 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-400/10 blur-3xl" />
+        <div className="hero-orb hero-orb-one absolute -left-24 top-10 -z-10 h-72 w-72 rounded-full bg-blue-400/20 blur-3xl" />
+        <div className="hero-orb hero-orb-two absolute -right-20 bottom-0 -z-10 h-96 w-96 rounded-full bg-yellow-300/15 blur-3xl" />
+        <div className="hero-orb hero-orb-three absolute left-1/2 top-1/2 -z-10 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow-400/10 blur-3xl" />
 
         <div className="relative mx-auto max-w-5xl">
-          <div className="hero-enter inline-flex items-center gap-2 rounded-full border border-green-300/30 bg-white/10 px-5 py-2 text-xs font-bold uppercase tracking-[0.2em] text-green-300 shadow-lg backdrop-blur-xl">
+          <div className="hero-enter inline-flex items-center gap-2 rounded-full border border-yellow-300/30 bg-white/10 px-5 py-2 text-xs font-bold uppercase tracking-[0.2em] text-yellow-300 shadow-lg backdrop-blur-xl">
             <ShieldCheck className="h-4 w-4" />
             Who We Are
             <Sparkles className="h-3.5 w-3.5" />
@@ -128,7 +128,7 @@ export default function About() {
             </span>
           </h1>
 
-          <p className="hero-enter hero-delay-2 mx-auto mt-7 max-w-3xl text-base leading-8 text-slate-200 sm:text-lg sm:leading-9">
+          <p className="hero-enter hero-delay-2 mx-auto mt-7 max-w-3xl text-base leading-8 text-slate-300 sm:text-lg sm:leading-9">
             {BUSINESS.name} is committed to delivering safe, reliable, and
             high-quality electrical, solar, and maintenance solutions for
             residential, commercial, and industrial clients.
@@ -137,7 +137,7 @@ export default function About() {
           <div className="hero-enter hero-delay-3 mt-9 flex flex-wrap items-center justify-center gap-4">
             <Link
               to="/services"
-              className="group inline-flex items-center justify-center gap-2 rounded-xl bg-green-400 px-6 py-3.5 font-bold text-forest-900 shadow-lg shadow-green-950/20 transition-all duration-300 hover:-translate-y-1 hover:bg-green-300 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300 focus-visible:ring-offset-2 focus-visible:ring-offset-forest-800"
+              className="group inline-flex items-center justify-center gap-2 rounded-xl bg-yellow-400 px-6 py-3.5 font-bold text-[#071726] shadow-lg shadow-yellow-900/20 transition-all duration-300 hover:-translate-y-1 hover:bg-yellow-300 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#071726]"
             >
               Explore Our Services
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -145,7 +145,7 @@ export default function About() {
 
             <Link
               to="/contact"
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/5 px-6 py-3.5 font-bold text-white backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-green-300/60 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/5 px-6 py-3.5 font-bold text-white backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-yellow-300/60 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300"
             >
               Talk to Our Team
             </Link>
@@ -162,9 +162,9 @@ export default function About() {
               return (
                 <div
                   key={item.label}
-                  className="hero-feature flex items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-4 backdrop-blur-md transition-all duration-300 hover:border-green-300/40 hover:bg-white/10"
+                  className="hero-feature flex items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-4 backdrop-blur-md transition-all duration-300 hover:border-yellow-300/40 hover:bg-white/10"
                 >
-                  <Icon className="h-5 w-5 text-green-300" />
+                  <Icon className="h-5 w-5 text-yellow-300" />
                   <span className="text-sm font-semibold text-slate-100">
                     {item.label}
                   </span>
@@ -199,14 +199,14 @@ export default function About() {
             return (
               <div
                 key={item.title}
-                className="intro-item flex gap-4 rounded-2xl p-3 transition-all duration-300 hover:bg-green-50"
+                className="intro-item flex gap-4 rounded-2xl p-3 transition-all duration-300 hover:bg-yellow-50/50"
                 style={{ animationDelay: `${index * 120}ms` }}
               >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-green-100 text-forest-800 transition-transform duration-300 hover:rotate-6 hover:scale-110">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-yellow-100 text-[#071726] transition-transform duration-300 hover:rotate-6 hover:scale-110">
                   <Icon className="h-6 w-6" />
                 </div>
                 <div>
-                  <h2 className="font-extrabold text-forest-800">{item.title}</h2>
+                  <h2 className="font-extrabold text-[#071726]">{item.title}</h2>
                   <p className="mt-1 text-sm leading-6 text-slate-600">
                     {item.desc}
                   </p>
@@ -225,16 +225,16 @@ export default function About() {
 
           {/* Mission */}
           <section className="reveal-section space-y-7">
-            <div className="inline-flex items-center gap-2 rounded-full bg-green-100 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.16em] text-forest-800">
-              <Target className="h-4 w-4" />
+            <div className="inline-flex items-center gap-2 rounded-full bg-yellow-100 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.16em] text-[#071726]">
+              <Target className="h-4 w-4 text-yellow-600" />
               Our Purpose
             </div>
 
             <div>
-              <h2 className="text-3xl font-black tracking-tight text-forest-800 sm:text-4xl">
+              <h2 className="text-3xl font-black tracking-tight text-[#071726] sm:text-4xl">
                 Our Mission
               </h2>
-              <div className="mt-4 h-1.5 w-20 rounded-full bg-green-500" />
+              <div className="mt-4 h-1.5 w-20 rounded-full bg-yellow-400" />
               <p className="mt-5 text-lg leading-8 text-slate-600">
                 At Garbbis Electrical and Maintenance, our mission is to make
                 a lasting, positive impact through dependable power solutions,
@@ -246,11 +246,11 @@ export default function About() {
               {missionPoints.map((item, index) => (
                 <div
                   key={item}
-                  className="mission-item group flex gap-4 rounded-2xl border border-transparent bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-green-200 hover:shadow-lg"
+                  className="mission-item group flex gap-4 rounded-2xl border border-transparent bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-yellow-200 hover:shadow-lg"
                   style={{ animationDelay: `${index * 80}ms` }}
                 >
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-green-100 transition-colors duration-300 group-hover:bg-green-500">
-                    <CheckCircle2 className="h-5 w-5 text-green-700 transition-colors group-hover:text-white" />
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-yellow-50 transition-colors duration-300 group-hover:bg-yellow-400">
+                    <CheckCircle2 className="h-5 w-5 text-yellow-600 transition-colors group-hover:text-[#071726]" />
                   </div>
                   <p className="text-sm font-medium leading-7 text-slate-700 sm:text-base">
                     {item}
@@ -262,20 +262,20 @@ export default function About() {
 
           {/* Vision */}
           <section className="reveal-section space-y-7 lg:sticky lg:top-8">
-            <div className="relative overflow-hidden rounded-3xl border border-green-100 bg-gradient-to-br from-green-50 via-white to-emerald-50 p-7 shadow-lg shadow-green-950/5 sm:p-10">
-              <div className="pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full bg-green-200/40 blur-2xl" />
+            <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-7 shadow-lg shadow-slate-900/5 sm:p-10">
+              <div className="pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full bg-blue-100/40 blur-2xl" />
               <div className="pointer-events-none absolute -bottom-10 -left-10 h-40 w-40 rounded-full bg-yellow-200/30 blur-2xl" />
 
               <div className="relative">
-                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-forest-800 text-green-300 shadow-lg transition-transform duration-500 hover:rotate-6 hover:scale-110">
+                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#071726] text-yellow-300 shadow-lg transition-transform duration-500 hover:rotate-6 hover:scale-110">
                   <Eye className="h-7 w-7" />
                 </div>
 
-                <span className="text-xs font-extrabold uppercase tracking-[0.2em] text-green-700">
+                <span className="text-xs font-extrabold uppercase tracking-[0.2em] text-slate-500">
                   Our Future
                 </span>
 
-                <h2 className="mt-2 text-3xl font-black tracking-tight text-forest-800 sm:text-4xl">
+                <h2 className="mt-2 text-3xl font-black tracking-tight text-[#071726] sm:text-4xl">
                   Our Vision
                 </h2>
 
@@ -286,14 +286,14 @@ export default function About() {
                   efficient, and future-ready systems.
                 </p>
 
-                <div className="my-7 h-px bg-green-200" />
+                <div className="my-7 h-px bg-slate-100" />
 
                 <div className="flex gap-4">
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-yellow-100 text-yellow-700">
                     <Sun className="h-6 w-6" />
                   </div>
                   <div>
-                    <h3 className="font-extrabold text-forest-800">
+                    <h3 className="font-extrabold text-[#071726]">
                       More Than a Service Provider
                     </h3>
                     <p className="mt-2 text-sm leading-7 text-slate-600">
@@ -306,7 +306,7 @@ export default function About() {
 
                 <Link
                   to="/contact"
-                  className="group mt-8 inline-flex items-center gap-2 font-bold text-forest-800 transition-colors hover:text-green-700"
+                  className="group mt-8 inline-flex items-center gap-2 font-bold text-[#071726] transition-colors hover:text-yellow-600"
                 >
                   Let’s build something reliable
                   <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -315,8 +315,8 @@ export default function About() {
             </div>
 
             {/* Small visual callout */}
-            <div className="flex items-center gap-4 rounded-2xl bg-forest-800 p-6 text-white shadow-lg transition-transform duration-300 hover:-translate-y-1">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-green-400 text-forest-900">
+            <div className="flex items-center gap-4 rounded-2xl bg-[#0b2134] p-6 text-white shadow-lg transition-transform duration-300 hover:-translate-y-1">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-yellow-400 text-[#071726]">
                 <Zap className="h-6 w-6" />
               </div>
               <div>
@@ -329,15 +329,82 @@ export default function About() {
           </section>
         </div>
 
+        {/* TEAM & LEADERSHIP SECTION (Positioned right after Mission & Vision) */}
+        {(ceo || team.length > 0) && (
+          <section className="reveal-section mt-32">
+            <div className="mx-auto max-w-3xl text-center mb-16">
+              <span className="inline-flex items-center gap-2 rounded-full bg-yellow-100 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.16em] text-yellow-800">
+                <Users className="h-4 w-4" />
+                Our People
+              </span>
+              <h2 className="mt-5 text-3xl font-black tracking-tight text-[#071726] sm:text-4xl">
+                Leadership That Powers Progress
+              </h2>
+            </div>
+
+            {/* CEO SPOTLIGHT */}
+            {ceo && (
+              <div className="bg-white rounded-[2.5rem] border border-slate-200 overflow-hidden shadow-xl shadow-slate-900/5 mb-16 max-w-5xl mx-auto grid md:grid-cols-12 items-start p-8 sm:p-12 gap-10">
+                {/* Left Side: Expanded image container */}
+                <div className="md:col-span-6 w-full bg-slate-50 rounded-3xl overflow-hidden flex items-center justify-center p-8 border border-slate-100">
+                  <img 
+                    src={ceo.image_url} 
+                    alt={ceo.name} 
+                    className="max-h-[520px] w-auto max-w-full object-contain rounded-2xl shadow-sm" 
+                  />
+                </div>
+                
+                {/* Right Side: Top-aligned text */}
+                <div className="md:col-span-6 flex flex-col justify-start text-left pt-1">
+                  <div className="mb-4">
+                    <span className="inline-flex text-xs font-black text-[#071726] bg-yellow-300 px-3.5 py-1.5 rounded-full uppercase tracking-[0.15em] shadow-sm">
+                      Meet Our CEO
+                    </span>
+                  </div>
+                  <h3 className="text-3xl sm:text-4xl font-black text-[#071726] tracking-tight mb-2">{ceo.name}</h3>
+                  <p className="text-xs sm:text-sm font-extrabold text-slate-500 uppercase tracking-widest mb-6">{ceo.role_title}</p>
+                  <p className="text-slate-600 leading-relaxed text-base">
+                    {ceo.description || "Leading Garbbis Electrical and Maintenance Limited with a vision for sustainable and reliable power solutions."}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* TECHNICAL TEAM GRID */}
+            {team.length > 0 && (
+              <div className="max-w-5xl mx-auto">
+                <h3 className="text-xl font-black text-[#071726] mb-8 pb-3 border-b-2 border-slate-200 inline-block">
+                  Our Technical Team
+                </h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+                  {team.map((member) => (
+                    <div key={member.id} className="text-center group">
+                      <div className="aspect-square rounded-2xl overflow-hidden bg-slate-100 mb-4 shadow-sm border border-slate-200">
+                        <img 
+                          src={member.image_url} 
+                          alt={member.name} 
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                        />
+                      </div>
+                      <h4 className="font-extrabold text-sm text-[#071726] line-clamp-1">{member.name}</h4>
+                      <p className="text-xs font-medium text-slate-500 mt-1 line-clamp-1">{member.role_title}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+        )}
+
         {/* CORE VALUES */}
-        <section className="reveal-section relative mt-24 overflow-hidden rounded-[2rem] bg-forest-800 p-7 text-white shadow-2xl sm:p-10 lg:p-14">
-          <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-green-400/10 blur-3xl" />
+        <section className="reveal-section relative mt-32 overflow-hidden rounded-[2rem] bg-[#071726] p-7 text-white shadow-2xl sm:p-10 lg:p-14">
+          <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-blue-400/10 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-yellow-300/10 blur-3xl" />
 
           <div className="relative">
             <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <div className="inline-flex items-center gap-2 rounded-full border border-green-300/25 bg-white/5 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-green-300">
+                <div className="inline-flex items-center gap-2 rounded-full border border-yellow-300/25 bg-white/5 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-yellow-300">
                   <HeartHandshake className="h-4 w-4" />
                   What Guides Us
                 </div>
@@ -350,8 +417,8 @@ export default function About() {
                 </p>
               </div>
 
-              <div className="hidden rounded-2xl border border-green-300/30 px-5 py-4 text-center sm:block">
-                <p className="text-3xl font-black text-green-300">9</p>
+              <div className="hidden rounded-2xl border border-yellow-300/30 px-5 py-4 text-center sm:block">
+                <p className="text-3xl font-black text-yellow-300">9</p>
                 <p className="mt-1 text-xs font-bold uppercase tracking-widest text-slate-300">
                   Core Values
                 </p>
@@ -362,11 +429,11 @@ export default function About() {
               {coreValues.map((value, index) => (
                 <article
                   key={value.title}
-                  className="value-card group rounded-2xl border border-white/10 bg-white/[0.045] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-green-300/40 hover:bg-white/[0.09] hover:shadow-xl hover:shadow-black/10"
+                  className="value-card group rounded-2xl border border-white/10 bg-white/[0.045] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-yellow-300/40 hover:bg-white/[0.09] hover:shadow-xl hover:shadow-black/10"
                   style={{ animationDelay: `${index * 70}ms` }}
                 >
                   <div className="flex items-center gap-4">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-green-400 text-xl font-black text-forest-900 shadow-md transition-all duration-300 group-hover:rotate-6 group-hover:scale-110">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-yellow-400 text-xl font-black text-[#071726] shadow-md transition-all duration-300 group-hover:rotate-6 group-hover:scale-110">
                       {value.letter}
                     </div>
                     <div>
@@ -382,7 +449,7 @@ export default function About() {
               ))}
             </div>
 
-            <div className="mt-9 inline-flex items-center gap-3 rounded-full border-2 border-green-400/70 px-6 py-3 text-sm font-black tracking-[0.2em] text-green-300 transition-all duration-300 hover:bg-green-400 hover:text-forest-900">
+            <div className="mt-9 inline-flex items-center gap-3 rounded-full border-2 border-yellow-400/70 px-6 py-3 text-sm font-black tracking-[0.2em] text-yellow-300 transition-all duration-300 hover:bg-yellow-400 hover:text-[#071726]">
               <ShieldCheck className="h-5 w-5" />
               FIRST TAPE
             </div>
@@ -390,14 +457,14 @@ export default function About() {
         </section>
 
         {/* KEY STRENGTHS */}
-        <section className="reveal-section mt-24">
+        <section className="reveal-section mt-32">
           <div className="mx-auto max-w-3xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full bg-green-100 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.16em] text-forest-800">
+            <span className="inline-flex items-center gap-2 rounded-full bg-yellow-100 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.16em] text-[#071726]">
               <Sparkles className="h-4 w-4" />
               The Difference
             </span>
 
-            <h2 className="mt-5 text-3xl font-black tracking-tight text-forest-800 sm:text-4xl">
+            <h2 className="mt-5 text-3xl font-black tracking-tight text-[#071726] sm:text-4xl">
               Our Key Strengths
             </h2>
 
@@ -413,14 +480,14 @@ export default function About() {
               return (
                 <article
                   key={strength.title}
-                  className="strength-card group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-green-200 hover:shadow-xl"
+                  className="strength-card group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-yellow-200 hover:shadow-xl"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-green-100 text-forest-800 transition-all duration-300 group-hover:rotate-6 group-hover:bg-forest-800 group-hover:text-green-300">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-yellow-50 text-[#0b2134] transition-all duration-300 group-hover:rotate-6 group-hover:bg-[#071726] group-hover:text-yellow-400">
                     <Icon className="h-7 w-7" />
                   </div>
 
-                  <h3 className="mt-5 text-lg font-extrabold text-forest-800">
+                  <h3 className="mt-5 text-lg font-extrabold text-[#071726]">
                     {strength.title}
                   </h3>
 
@@ -428,82 +495,24 @@ export default function About() {
                     {strength.desc}
                   </p>
 
-                  <div className="mt-5 h-1 w-10 rounded-full bg-green-400 transition-all duration-300 group-hover:w-20" />
+                  <div className="mt-5 h-1 w-10 rounded-full bg-yellow-400 transition-all duration-300 group-hover:w-20" />
                 </article>
               )
             })}
           </div>
         </section>
 
-        {/* TEAM & LEADERSHIP SECTION */}
-        {(ceo || team.length > 0) && (
-          <section className="reveal-section mt-24">
-            <div className="mx-auto max-w-3xl text-center mb-12">
-              <span className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.16em] text-amber-800">
-                <Users className="h-4 w-4" />
-                Our People
-              </span>
-              <h2 className="mt-5 text-3xl font-black tracking-tight text-forest-800 sm:text-4xl">
-                Leadership That Powers Progress
-              </h2>
-            </div>
-
-            {/* CEO SPOTLIGHT */}
-            {ceo && (
-              <div className="bg-white rounded-[2rem] p-8 mb-16 border border-slate-200 grid md:grid-cols-2 gap-10 items-center shadow-xl shadow-slate-900/5">
-                <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-md">
-                  <img src={ceo.image_url} alt={ceo.name} className="w-full h-full object-cover" />
-                </div>
-                <div className="space-y-5">
-                  <span className="inline-flex text-xs font-bold text-amber-700 bg-amber-100 px-3 py-1.5 rounded-full uppercase tracking-wider">
-                    Meet Our CEO
-                  </span>
-                  <h3 className="text-3xl font-black text-forest-800">{ceo.name}</h3>
-                  <p className="text-base font-bold text-forest-700/80">{ceo.role_title}</p>
-                  <p className="text-slate-600 leading-relaxed">
-                    {ceo.description || "Leading Garbbis Electrical and Maintenance Limited with a vision for sustainable and reliable power solutions."}
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* TECHNICAL TEAM GRID */}
-            {team.length > 0 && (
-              <div>
-                <h3 className="text-xl font-black text-forest-800 mb-8 pb-3 border-b-2 border-green-100 inline-block">
-                  Our Technical Team
-                </h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                  {team.map((member) => (
-                    <div key={member.id} className="text-center group">
-                      <div className="aspect-square rounded-2xl overflow-hidden bg-slate-100 mb-4 shadow-sm border border-slate-200">
-                        <img 
-                          src={member.image_url} 
-                          alt={member.name} 
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-                        />
-                      </div>
-                      <h4 className="font-extrabold text-sm text-forest-800 line-clamp-1">{member.name}</h4>
-                      <p className="text-xs font-medium text-slate-500 mt-1 line-clamp-1">{member.role_title}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </section>
-        )}
-
         {/* FINAL CTA */}
-        <section className="reveal-section relative mt-24 overflow-hidden rounded-[2rem] border border-green-100 bg-gradient-to-br from-green-50 via-white to-emerald-50 px-6 py-14 text-center sm:px-12 sm:py-16">
-          <div className="pointer-events-none absolute -left-12 -top-12 h-48 w-48 rounded-full bg-green-200/40 blur-3xl" />
+        <section className="reveal-section relative mt-32 overflow-hidden rounded-[2rem] border border-slate-200 bg-white px-6 py-14 text-center sm:px-12 sm:py-16 shadow-lg shadow-slate-900/5">
+          <div className="pointer-events-none absolute -left-12 -top-12 h-48 w-48 rounded-full bg-blue-100/40 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-12 -right-12 h-48 w-48 rounded-full bg-yellow-200/40 blur-3xl" />
 
           <div className="relative mx-auto max-w-3xl">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-forest-800 text-green-300 shadow-lg transition-transform duration-500 hover:rotate-6 hover:scale-110">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#071726] text-yellow-400 shadow-lg transition-transform duration-500 hover:rotate-6 hover:scale-110">
               <Zap className="h-8 w-8" />
             </div>
 
-            <h2 className="mt-6 text-3xl font-black tracking-tight text-forest-800 sm:text-4xl">
+            <h2 className="mt-6 text-3xl font-black tracking-tight text-[#071726] sm:text-4xl">
               Ready to Work With Us?
             </h2>
 
@@ -537,7 +546,7 @@ export default function About() {
       <style>{`
         .about-hero {
           background-image:
-            radial-gradient(ellipse at 15% 15%, rgba(34, 197, 94, 0.15), transparent 38%),
+            radial-gradient(ellipse at 15% 15%, rgba(59, 130, 246, 0.08), transparent 38%),
             radial-gradient(ellipse at 85% 80%, rgba(250, 204, 21, 0.09), transparent 36%);
         }
 
@@ -550,7 +559,7 @@ export default function About() {
         }
 
         .hero-gradient-text {
-          background: linear-gradient(100deg, #86efac 0%, #d9f99d 45%, #fde68a 100%);
+          background: linear-gradient(100deg, #fef08a 0%, #facc15 45%, #eab308 100%);
           background-size: 200% auto;
           color: transparent;
           -webkit-background-clip: text;
@@ -620,4 +629,10 @@ export default function About() {
             animation-duration: 0.01ms !important;
             animation-iteration-count: 1 !important;
             scroll-behavior: auto !important;
-            transition
+            transition-duration: 0.01ms !important;
+          }
+        }
+      `}</style>
+    </div>
+  )
+}
