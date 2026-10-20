@@ -20,16 +20,13 @@ const links = [
 function Logo() {
   const [failed, setFailed] = useState(false)
   return (
-    <Link to="/" className="flex items-center gap-2.5" aria-label={`${BUSINESS.name} home`}>
+    <Link to="/" className="flex items-center" aria-label={`${BUSINESS.name} home`}>
       {failed ? (
         <Sun className="h-8 w-8 text-[#071726]" aria-hidden="true" />
       ) : (
         <img src={LOGO_SRC} alt={`${BUSINESS.shortName} logo`} className="h-12 w-auto"
           onError={() => setFailed(true)} />
       )}
-      <span className="hidden text-sm font-black leading-tight text-[#071726] sm:block">
-        Garbbis Electrical<br />&amp; Maintenance Ltd
-      </span>
     </Link>
   )
 }
